@@ -1,0 +1,97 @@
+class WeatherData{
+  final double temperature;
+  final int humidity;
+  final int chanceOfRain;
+
+  WeatherData({required this.temperature, required this.humidity, required this.chanceOfRain});
+}
+
+class WeatherReport extends StatefulWidget{
+  const WeatherReport({super.key});
+  static TextStyle txtStyle = const TextStyle(
+    color: Colors.white,
+    fontSize: 20,
+  );
+
+  @override
+  State<WeatherReport> createState() => _WeatherReportState();
+}
+
+class _WeatherReportState extends State<WeatherReport> {
+  final List<WeatherData> weatherDetails = [
+    WeatherData(temperature: 26, humidity: 75, chanceOfRain: 10),
+    WeatherData(temperature: 10, humidity: 34, chanceOfRain: 40),
+    WeatherData(temperature: 15, humidity: 78, chanceOfRain: 2),
+  ];
+
+  late int selectedCity = 0;
+
+  void _showDialog(BuildContext context){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: const Text('Choose a city'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text('City 1'),
+                onTap: () {
+                  setState(() {
+                    selectedCity = 0;
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: const Text('City 2'),
+                onTap: () {
+                  setState(() {
+                    selectedCity = 1;
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: const Text('City 3'),
+                onTap: () {
+                  setState(() {
+                    selectedCity = 2;
+                  });
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        );
+      }
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () => _showDialog(context),
+            child: const Text('Choose City'),
+          ),
+          Text(
+            'Temperature: ${weatherDetails[selectedCity].temperature}C', 
+            style: WeatherReport.txtStyle,
+          ),
+          Text(
+            'Chance of Rain: ${weatherDetails[selectedCity].chanceOfRain}%',
+            style: WeatherReport.txtStyle,
+          ),
+          Text(
+            'Humidity: ${weatherDetails[selectedCity].humidity}%',
+            style: WeatherReport.txtStyle,
+          ),
+        ],
+      ),
+    );
+  }
+}
